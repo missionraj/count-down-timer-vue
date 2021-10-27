@@ -3,10 +3,14 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 
 import Timer from "@/components/Timer.vue";
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 const newYears = "1 Jan 2022";
-const currentDate : Date = new Date();
+
+const daysRemaining = ref("");
+const hoursRemaining = ref("");
+const minuteRemaining = ref("");
+const secondsRemaining = ref("");
 const countdown = () => {
     const newYearsDate: Date = new Date(newYears);
     const currentDate: Date = new Date();
@@ -18,7 +22,14 @@ const countdown = () => {
     const mins = Math.floor(totalSeconds / 60) % 60;
     const seconds = Math.floor(totalSeconds) % 60;
 
-    console.log(days, hours, mins, seconds);
+    daysRemaining.value = days.toString();
+    hoursRemaining.value = formatTime(hours);
+    minuteRemaining.value = formatTime(mins);
+    secondsRemaining.value = formatTime(seconds);
+}
+
+function formatTime(time: number) {
+    return time < 10 ? `0${time}` : time.toString();
 }
 let timeVar: ReturnType<typeof setInterval> ;
   onMounted(()=> { 
@@ -33,14 +44,13 @@ let timeVar: ReturnType<typeof setInterval> ;
 <template>
   <div class="container">
     <div class="title">
-      <h1> Until new Beginings </h1>
+      Until new Beginings 
     </div>
     <div class="timer"> 
-        <Timer />
-        <Timer />
-        <Timer />
-        <Timer />
-        <Timer />
+        <Timer :count="daysRemaining" label="Days" />
+        <Timer :count="hoursRemaining" label="Hours" />
+        <Timer :count="minuteRemaining" label="Minutes" />
+        <Timer :count="secondsRemaining" label="Seconds" />
     </div>
   </div>
 </template>
@@ -63,9 +73,12 @@ let timeVar: ReturnType<typeof setInterval> ;
     background-repeat: no-repeat;
     text-align: center;
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
   .title { 
-    padding-top: 3rem;
+    font-size: 4rem;
   }
 
   .timer { 

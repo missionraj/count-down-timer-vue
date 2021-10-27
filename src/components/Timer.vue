@@ -1,13 +1,19 @@
 <template>
     <div>
         <div class="count">
-            2 
+            {{count}} 
         </div>
-        <div class="tag"> <strong> Months </strong> </div>
+        <div class="tag"> <strong> {{ label }} </strong> </div>
     </div>
 </template>
 
 <script setup lang="ts">
+
+const props = defineProps<{
+  count: string
+  label: string
+}>()
+
 
 </script>
 
